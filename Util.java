@@ -8,12 +8,18 @@ import greenfoot.*;
  */
 public class Util  
 {
-
-    /**
-     * Genera un número aleatorio inclusivo al rango entregado
-     */
+    
     public static int getRandomNumber(int min, int max)
     {
         return Greenfoot.getRandomNumber(max - min + 1) + min;
+    }  
+    
+    public static Color randomColor(int min, int max) {
+        return new Color(
+                Util.getRandomNumber(min, max),
+                Util.getRandomNumber(min, max),
+                Util.getRandomNumber(min, max),
+                Util.getRandomNumber(min, max));
     }
+    
 }

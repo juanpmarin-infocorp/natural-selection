@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=KeySet
-comment0.text=\n\ Write\ a\ description\ of\ class\ Keyset\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Keyset\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=up\ down\ left\ right
 comment1.target=KeySet(java.lang.String,\ java.lang.String,\ java.lang.String,\ java.lang.String)
 comment2.params=

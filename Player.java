@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.List;
 
 /**
  * Write a description of class Player here.
@@ -9,14 +10,23 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Player extends Circle
 {
     
-    private static final int RADIUS = 24;
+    private static final int LOOSE_OFFSET = 10;
     
+    private boolean enabled = true;
+    private MyWorld world;
     private KeySet keySet;
     
     
-    public Player(Color color, KeySet keySet) {
-        super(color, RADIUS);
+    public Player(Color color, KeySet keySet, int initialRadius) {
+        super(color, initialRadius);
         this.keySet = keySet;
+        setRadius(initialRadius);
+    }
+    
+    @Override
+    protected void addedToWorld(World world) {
+        super.addedToWorld(world);
+        this.world = (MyWorld)world;
     }
     
     /**
@@ -25,22 +35,76 @@ public class Player extends Circle
      */
     public void act() 
     {
-        if (Greenfoot.isKeyDown(this.keySet.getUp())) {
-            setRotation(270);
+        if (enabled) {
+            handleDownKeys();
+            eat();
+            
+            int movements = 200 / getRadius();
+            move(movements == 0 ? 1 : movements);
         }
+    }
+    
+    private void handleDownKeys() {        
+        boolean upPressed = Greenfoot.isKeyDown(this.keySet.getUp());
+        boolean downPressed = Greenfoot.isKeyDown(this.keySet.getDown());
+        boolean rightPressed = Greenfoot.isKeyDown(this.keySet.getRight());
+        boolean leftPressed = Greenfoot.isKeyDown(this.keySet.getLeft());
         
-        if (Greenfoot.isKeyDown(this.keySet.getDown())) {
-            setRotation(90);
+        boolean invalid = !(upPressed ^ downPressed) && !(rightPressed ^ leftPressed);
+        
+        if (!invalid) {       
+            int rotation = 0;
+            int pressed = 0;
+            
+            if (rightPressed) {
+                rotation += upPressed ? 360 : 0;
+                pressed++;
+            }
+            
+            if (downPressed) {
+                rotation += 90;
+                pressed++;
+            }
+            
+            if (leftPressed) {
+                rotation += 180;
+                pressed++;
+            } 
+            
+            if (upPressed) {
+                rotation += 270;
+                pressed++;
+            }          
+
+            setRotation(rotation / pressed);
         }
+    }
+    
+    private void eat() {
+        List<Circle> intersectingCircles = getObjectsInRange(getRadius(), Circle.class);
         
-        if (Greenfoot.isKeyDown(this.keySet.getLeft())) {
-            setRotation(180);
+        if (intersectingCircles.size() > 0) {        
+            for (Circle circle : intersectingCircles) {
+                if (circle instanceof Player) {
+                    Player enemy = (Player) circle;
+                    if (enemy.getRadius() >= getRadius() - LOOSE_OFFSET) {
+                        continue;
+                    } else {
+                        world.win(this);
+                    }
+                } else {
+                    world.addFoodParticle();
+                    bumpRadius();
+                }
+                
+                world.removeObject(circle);
+            }
+            
+            render();
         }
-        
-        if (Greenfoot.isKeyDown(this.keySet.getRight())) {
-            setRotation(0);
-        }
-        
-        move(4);
-    }    
+    }
+    
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }
