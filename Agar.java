@@ -7,7 +7,7 @@ import java.util.List;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class MyWorld extends World
+public class Agar extends World
 {
     private static final int INITIAL_FOOD = 60;
     private static final int FOOD_RADIUS = 7;
@@ -19,7 +19,7 @@ public class MyWorld extends World
      * Constructor for objects of class MyWorld.
      * 
      */
-    public MyWorld()
+    public Agar()
     {    
         super(896, 768, 1);
         
@@ -32,10 +32,10 @@ public class MyWorld extends World
     }
     
     private void addPlayers() {        
-        KeySet leftKeySet = new KeySet("up", "down", "left", "right");
+        KeySet leftKeySet = new KeySet("w", "s", "a", "d");
         Player leftPlayer = new Player("Red player", new Color(254, 86, 73), leftKeySet, Player.INITIAL_PLAYER_RADIUS);
         
-        KeySet rightKeySet = new KeySet("w", "s", "a", "d");
+        KeySet rightKeySet = new KeySet("up", "down", "left", "right");
         Player rightPlayer = new Player("Blue player", new Color(89, 234, 234), rightKeySet, Player.INITIAL_PLAYER_RADIUS);
         rightPlayer.setRotation(180);
         
@@ -71,17 +71,10 @@ public class MyWorld extends World
     }
     
     public void win(Player player) {
-        int i = 0;
-        for (i = 0; i < players.length; i++) {
-            if (players[i] == player) {
-                Actor winnerText = new WinnerText(players[i]);        
-                addObject(winnerText, getWidth() / 2, getHeight() / 3);
-                break;
-            }
-        }
-        
         player.setEnabled(false);
         player.setLocation(getWidth() / 2, getHeight() / 2);
+        
+        addObject(new WinnerText(player), getWidth() / 2, getHeight() / 3);
         
         List<FoodParticle> foodParticles = getObjects(FoodParticle.class);
         for (FoodParticle foodParticle : foodParticles) {

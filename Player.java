@@ -14,7 +14,7 @@ public class Player extends Circle
     private static final int LOOSE_OFFSET = 10;
     
     private boolean enabled = true;
-    private MyWorld world;
+    private Agar world;
     
     private String name;
     private KeySet keySet;
@@ -30,7 +30,7 @@ public class Player extends Circle
     @Override
     protected void addedToWorld(World world) {
         super.addedToWorld(world);
-        this.world = (MyWorld)world;
+        this.world = (Agar)world;
     }
     
     /**
