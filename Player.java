@@ -10,15 +10,19 @@ import java.util.List;
 public class Player extends Circle
 {
     
+    public static final int INITIAL_PLAYER_RADIUS = 24;
     private static final int LOOSE_OFFSET = 10;
     
     private boolean enabled = true;
     private MyWorld world;
+    
+    private String name;
     private KeySet keySet;
     
     
-    public Player(Color color, KeySet keySet, int initialRadius) {
+    public Player(String name, Color color, KeySet keySet, int initialRadius) {
         super(color, initialRadius);
+        this.name = name;
         this.keySet = keySet;
         setRadius(initialRadius);
     }
@@ -87,7 +91,7 @@ public class Player extends Circle
             for (Circle circle : intersectingCircles) {
                 if (circle instanceof Player) {
                     Player enemy = (Player) circle;
-                    if (enemy.getRadius() >= getRadius() - LOOSE_OFFSET) {
+                    if (enemy.getRadius() > getRadius() - LOOSE_OFFSET) {
                         continue;
                     } else {
                         world.win(this);
@@ -102,6 +106,14 @@ public class Player extends Circle
             
             render();
         }
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getScore() {
+        return getRadius() - INITIAL_PLAYER_RADIUS;
     }
     
     public void setEnabled(boolean enabled) {

@@ -11,7 +11,6 @@ public class MyWorld extends World
 {
     private static final int INITIAL_FOOD = 60;
     private static final int FOOD_RADIUS = 7;
-    private static final int INITIAL_PLAYER_RADIUS = 24;
     
     private Player[] players;
     
@@ -26,7 +25,7 @@ public class MyWorld extends World
         
         setBackground("images/background.jpg");
         
-        this.setPaintOrder(WinnerText.class, Player.class, FoodParticle.class);
+        this.setPaintOrder(WinnerText.class, PlayerScoreText.class, Player.class, FoodParticle.class);
         
         addPlayers();
         addFood();
@@ -34,16 +33,19 @@ public class MyWorld extends World
     
     private void addPlayers() {        
         KeySet leftKeySet = new KeySet("up", "down", "left", "right");
-        Player leftPlayer = new Player(new Color(254, 86, 73), leftKeySet, INITIAL_PLAYER_RADIUS);
+        Player leftPlayer = new Player("Red player", new Color(254, 86, 73), leftKeySet, Player.INITIAL_PLAYER_RADIUS);
         
         KeySet rightKeySet = new KeySet("w", "s", "a", "d");
-        Player rightPlayer = new Player(new Color(89, 234, 234), rightKeySet, INITIAL_PLAYER_RADIUS);
+        Player rightPlayer = new Player("Blue player", new Color(89, 234, 234), rightKeySet, Player.INITIAL_PLAYER_RADIUS);
         rightPlayer.setRotation(180);
         
         addObject(leftPlayer, 150, getHeight() / 2);
         addObject(rightPlayer, getWidth() - 150, getHeight() / 2);
         
-        players = new Player[]{leftPlayer, rightPlayer};
+        addObject(new PlayerScoreText(leftPlayer), getWidth() / 2, 36);
+        addObject(new PlayerScoreText(rightPlayer), getWidth() / 2, 62);
+        
+        players = new Player[]{leftPlayer, rightPlayer};        
     }
     
     private void addFood() {
@@ -72,12 +74,11 @@ public class MyWorld extends World
         int i = 0;
         for (i = 0; i < players.length; i++) {
             if (players[i] == player) {
+                Actor winnerText = new WinnerText(players[i]);        
+                addObject(winnerText, getWidth() / 2, getHeight() / 3);
                 break;
             }
         }
-        
-        Actor winnerText = new WinnerText("Player " + (i + 1));        
-        addObject(winnerText, getWidth() / 2, getHeight() / 3);
         
         player.setEnabled(false);
         player.setLocation(getWidth() / 2, getHeight() / 2);
