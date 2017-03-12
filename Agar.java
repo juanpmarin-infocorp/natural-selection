@@ -54,20 +54,16 @@ public class Agar extends World
         }
     }
     
-    public void addFoodParticle() {
-        List<Actor> objectsAtPosition = null;
-        int x = 0;
-        int y = 0;
-        
-        while(objectsAtPosition == null || objectsAtPosition.size() > 0) {
-            x = Greenfoot.getRandomNumber(getWidth());
-            y = Greenfoot.getRandomNumber(getHeight());
+    public void addFoodParticle() {        
+        for (int i = 0; i < 72; i++) {
+            int x = Greenfoot.getRandomNumber(getWidth());
+            int y = Greenfoot.getRandomNumber(getHeight());
             
-            objectsAtPosition = getObjectsAt(x, y, Actor.class);
+            if (getObjectsAt(x, y, Actor.class).size() == 0) {
+                addObject(new FoodParticle(FOOD_RADIUS), x, y);
+                break;
+            }
         }
-        FoodParticle foodParticle = new FoodParticle(FOOD_RADIUS);
-        
-        addObject(foodParticle, x, y);
     }
     
     public void win(Player player) {
