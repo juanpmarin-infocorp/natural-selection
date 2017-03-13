@@ -10,10 +10,7 @@ import java.util.List;
 public class Agar extends World
 {
     private static final int INITIAL_FOOD = 60;
-    private static final int FOOD_RADIUS = 7;
-    
-    private Player[] players;
-    
+    private static final int FOOD_RADIUS = 7;    
     
     /**
      * Constructor for objects of class MyWorld.
@@ -43,9 +40,7 @@ public class Agar extends World
         addObject(rightPlayer, getWidth() - 150, getHeight() / 2);
         
         addObject(new PlayerScoreText(leftPlayer), getWidth() / 2, 36);
-        addObject(new PlayerScoreText(rightPlayer), getWidth() / 2, 62);
-        
-        players = new Player[]{leftPlayer, rightPlayer};        
+        addObject(new PlayerScoreText(rightPlayer), getWidth() / 2, 62);      
     }
     
     private void addFood() {
@@ -72,9 +67,6 @@ public class Agar extends World
         
         addObject(new WinnerText(player), getWidth() / 2, getHeight() / 3);
         
-        List<FoodParticle> foodParticles = getObjects(FoodParticle.class);
-        for (FoodParticle foodParticle : foodParticles) {
-            removeObject(foodParticle);
-        }
+        removeObjects(getObjects(FoodParticle.class));
     }
 }

@@ -24,12 +24,12 @@ public class Circle extends Actor
     }
     
     protected void render() {
-        GreenfootImage img = new GreenfootImage(radius * 2, radius * 2);
+        GreenfootImage image = new GreenfootImage(radius * 2, radius * 2);
         
-        img.setColor(color);
+        image.setColor(color);
                 
-        img.fillOval(0, 0, radius * 2, radius * 2);
-        setImage(img);
+        image.fillOval(0, 0, radius * 2, radius * 2);
+        setImage(image);
     }
     
     /**

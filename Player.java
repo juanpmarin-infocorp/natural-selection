@@ -14,6 +14,8 @@ public class Player extends Circle
     private static final int LOOSE_OFFSET = 10;
     
     private boolean enabled = true;
+    private boolean quiet = true;
+    
     private Agar world;
     
     private String name;
@@ -38,13 +40,15 @@ public class Player extends Circle
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public void act() 
-    {
+    {            
         if (enabled) {
             handleDownKeys();
             eat();
             
-            int movements = 200 / getRadius();
-            move(movements == 0 ? 1 : movements);
+            if (!quiet) {
+                int movements = 200 / getRadius();
+                move(movements == 0 ? 1 : movements);
+            }
         }
     }
     
@@ -53,6 +57,10 @@ public class Player extends Circle
         boolean downPressed = Greenfoot.isKeyDown(this.keySet.getDown());
         boolean rightPressed = Greenfoot.isKeyDown(this.keySet.getRight());
         boolean leftPressed = Greenfoot.isKeyDown(this.keySet.getLeft());
+        
+        if (upPressed || downPressed || rightPressed || leftPressed) {
+            quiet = false;
+        }
         
         boolean invalid = !(upPressed ^ downPressed) && !(rightPressed ^ leftPressed);
         
