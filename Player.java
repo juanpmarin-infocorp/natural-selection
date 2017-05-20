@@ -11,12 +11,12 @@ public class Player extends Circle
 {
     
     public static final int INITIAL_PLAYER_RADIUS = 24;
-    private static final int LOOSE_OFFSET = 10;
+    public static final int LOOSE_OFFSET = 10;
     
     private boolean enabled = true;
     private boolean quiet = true;
     
-    private Agar world;
+    private World world;
     
     private String name;
     private KeySet keySet;
@@ -32,7 +32,7 @@ public class Player extends Circle
     @Override
     protected void addedToWorld(World world) {
         super.addedToWorld(world);
-        this.world = (Agar)world;
+        this.world = world;
     }
     
     /**
@@ -93,26 +93,16 @@ public class Player extends Circle
     }
     
     private void eat() {
-        List<Circle> intersectingCircles = getObjectsInRange(getRadius(), Circle.class);
-        
-        if (intersectingCircles.size() > 0) {        
-            for (Circle circle : intersectingCircles) {
-                if (circle instanceof Player) {
-                    Player enemy = (Player) circle;
-                    if (enemy.getRadius() > getRadius() - LOOSE_OFFSET) {
-                        continue;
-                    } else {
-                        world.win(this);
-                    }
-                } else {
-                    world.addFoodParticle();
-                    bumpRadius();
+        if (world instanceof AgarWorld) {
+            List<Circle> intersectingCircles = getObjectsInRange(getRadius(), Circle.class);
+            
+            if (intersectingCircles.size() > 0) {        
+                for (Circle circle : intersectingCircles) {
+                    ((AgarWorld) world).eat(this, circle);
                 }
                 
-                world.removeObject(circle);
+                render();
             }
-            
-            render();
         }
     }
     
