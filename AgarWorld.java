@@ -23,7 +23,7 @@ public class AgarWorld extends World
         
         setBackground("images/background.jpg");
         
-        this.setPaintOrder(TitleText.class, PlayerScoreText.class, Player.class, FoodParticle.class);
+        this.setPaintOrder(TextView.class, Player.class, FoodParticle.class);
         
         addPlayers();
         addFood();

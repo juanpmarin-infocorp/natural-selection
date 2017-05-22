@@ -6,24 +6,25 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class PlayerScoreText extends Actor
+public class PlayerScoreText extends TextView
 {
-    private static final Color COLOR = new Color(82, 85, 82);
     private static final int FONT_SIZE = 24;
     
     private Player player;
     
     
     public PlayerScoreText(Player player) {
+        super("", FONT_SIZE);
         this.player = player;
     }
     
     public void addedToWorld(World world) {
-        render();
+        super.addedToWorld(world);
+        updateScore();
     }
     
-    public void render() {
-        setImage(new GreenfootImage(player.getName() + ": " + player.getScore(), FONT_SIZE, COLOR, new Color(0, 0, 0, 5)));
+    public void updateScore() {
+        setText(player.getName() + ": " + player.getScore());
     }
     
     /**
@@ -32,6 +33,7 @@ public class PlayerScoreText extends Actor
      */
     public void act() 
     {
-        render();
+        super.act();
+        updateScore();
     }
 }
